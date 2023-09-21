@@ -1,44 +1,46 @@
-Installing, this may take a few minutes...
-Please create a default UNIX user account. The username does not need to match your Windows username.
-For more information visit: https://aka.ms/wslusers
-Enter new UNIX username: luciolemos
-New password:
-Retype new password:
-passwd: password updated successfully
-Installation successful!
-To run a command as administrator (user "root"), use "sudo <command>".
-See "man sudo_root" for details.
+### 1 - INSTALANDO UBUNTU 22.04.2 LTS NO WSL2
+#### CONFIGURANDO USUÁRIO UNIX E SENHA
+    Installing, this may take a few minutes...
+    Please create a default UNIX user account. The username does not need to match your Windows username.
+    For more information visit: https://aka.ms/wslusers
+    Enter new UNIX username: luciolemos
+    New password:
+    Retype new password:
+    passwd: password updated successfully
+    Installation successful!
+    To run a command as administrator (user "root"), use "sudo <command>".
+    See "man sudo_root" for details.
 
-Welcome to Ubuntu 22.04.2 LTS (GNU/Linux 5.15.90.1-microsoft-standard-WSL2 x86_64)
+    Welcome to Ubuntu 22.04.2 LTS (GNU/Linux 5.15.90.1-microsoft-standard-WSL2 x86_64)
 
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/advantage
+    * Documentation:  https://help.ubuntu.com
+    * Management:     https://landscape.canonical.com
+    * Support:        https://ubuntu.com/advantage
 
 
-This message is shown once a day. To disable it please create the
-/home/luciolemos/.hushlogin file.
-luciolemos@dev:~$ sudo apt update
-
-luciolemos@dev:~$ sudo apt install apache2
-
-luciolemos@dev:~$ sudo ufw app list
-Available applications:
-  Apache
-  Apache Full
-  Apache Secure
-
-luciolemos@dev:~$ sudo ufw allow in "Apache"
-Rules updated
-Rules updated (v6)
-
-luciolemos@dev:~$ sudo ufw status
-Status: inactive
-
-luciolemos@dev:~$ curl http://icanhazip.com
-187.19.241.252
-
-luciolemos@dev:~$ sudo apt install mysql-server
+    This message is shown once a day. To disable it please create the /home/luciolemos/.hushlogin file.
+#### ATUALIZANDO OS PACOTES
+    luciolemos@dev:~$ sudo apt update
+### 2 - INSTALANDO O APACHE2
+    luciolemos@dev:~$ sudo apt install apache2
+#### LISTA DE CONTROLE DO FIREWAL DO UBUNTU
+    luciolemos@dev:~$ sudo ufw app list
+    Available applications:
+      Apache
+      pache Full
+      Apache Secure
+#### ESCOLHENDO O APACHE
+    luciolemos@dev:~$ sudo ufw allow in "Apache"
+    Rules updated
+    Rules updated (v6)
+#### VERIFICANDO O STATUS DO FIREWAL
+    luciolemos@dev:~$ sudo ufw status
+    Status: inactive
+#### VERIFICANDO O IP PÚBLICO
+    luciolemos@dev:~$ curl http://icanhazip.com
+    187.19.241.252
+### 3 - INSTALANDO MYSQL SERVER
+    luciolemos@dev:~$ sudo apt install mysql-server
 
 luciolemos@dev:~$ sudo mysql
 Welcome to the MySQL monitor.  Commands end with ; or \g.
@@ -78,18 +80,18 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 mysql> exit
 Bye
-
-luciolemos@dev:~$ sudo apt install php libapache2-mod-php php-mysql
-
-luciolemos@dev:~$ php -v
-PHP 8.1.2-1ubuntu2.14 (cli) (built: Aug 18 2023 11:41:11) (NTS)
-Copyright (c) The PHP Group
-Zend Engine v4.1.2, Copyright (c) Zend Technologies
+### 4 - INSTALANDO PHP
+    luciolemos@dev:~$ sudo apt install php libapache2-mod-php php-mysql
+#### VERIFICANDO A VERSÃO DO PHP
+    luciolemos@dev:~$ php -v
+    PHP 8.1.2-1ubuntu2.14 (cli) (built: Aug 18 2023 11:41:11) (NTS)
+    Copyright (c) The PHP Group
+    Zend Engine v4.1.2, Copyright (c) Zend Technologies
     with Zend OPcache v8.1.2-1ubuntu2.14, Copyright (c), by Zend Technologies
-
-luciolemos@dev:~$ sudo mkdir /var/www/dev
-
-luciolemos@dev:~$ sudo chown -R $USER:$USER /var/www/dev
+#### CRIANDO O HOST `dev` DENTRO DA ESTRUTURA `/var/www`.
+    luciolemos@dev:~$ sudo mkdir /var/www/dev
+#### DANNDO PERMISSÃO AO USUÁRIO
+    luciolemos@dev:~$ sudo chown -R $USER:$USER /var/www/dev
 
 luciolemos@dev:~$ sudo nano /etc/apache2/sites-available/dev.conf
 
@@ -102,15 +104,15 @@ luciolemos@dev:~$ sudo a2dissite 000-default
 Site 000-default disabled.
 To activate the new configuration, you need to run:
   systemctl reload apache2
-
-luciolemos@dev:~$ sudo apache2ctl configtest
-Syntax OK
-
-luciolemos@dev:~$ sudo systemctl reload apache2
-
-luciolemos@dev:~$ nano /var/www/dev/index.html
-
-luciolemos@dev:~$ nano /var/www/dev/info.php
+#### VERIFICANDO A SINTAXE
+    luciolemos@dev:~$ sudo apache2ctl configtest
+    Syntax OK
+#### RELOAD DO APACHE
+    luciolemos@dev:~$ sudo systemctl reload apache2
+#### CRIA DENTRO DE `dev` O ARQUIVO `index.html`
+    luciolemos@dev:~$ nano /var/www/dev/index.html
+#### CRIA DENTRO DE `dev` o ARQUIVO `info.php`
+    luciolemos@dev:~$ nano /var/www/dev/info.php
 
 luciolemos@dev:~$ mysql -u root -p
 Enter password:
