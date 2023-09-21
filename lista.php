@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container mt-5">
         <h1>Hello Dev!</h1>
         <p>This is the landing page of <strong>Dev</strong>.</p>
         <?php

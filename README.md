@@ -41,174 +41,75 @@
     187.19.241.252
 ### 3 - INSTALANDO MYSQL SERVER
     luciolemos@dev:~$ sudo apt install mysql-server
-
-luciolemos@dev:~$ sudo mysql
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 8
-Server version: 8.0.34-0ubuntu0.22.04.1 (Ubuntu)
-
-Copyright (c) 2000, 2023, Oracle and/or its affiliates.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
-Query OK, 0 rows affected (0.02 sec)
-
-mysql> exit
-Bye
-
-luciolemos@dev:~$ sudo mysql_secure_installation
-
-
-luciolemos@dev:~$ mysql -u root -p
-Enter password:
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 11
-Server version: 8.0.34-0ubuntu0.22.04.1 (Ubuntu)
-
-Copyright (c) 2000, 2023, Oracle and/or its affiliates.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-mysql> exit
-Bye
+#### LOGANDO NO MYSQL SERVER
+    luciolemos@dev:~$ sudo mysql
+#### DEFININDO SENHA PARA O USUÁRIO ROOT
+    mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
+#### SAINDO DO MYSQL
+    mysql> exit
+#### CONFIGURAÇÕES DE SEGURANÇA DO MYSQL SERVER
+    luciolemos@dev:~$ sudo mysql_secure_installation
+#### ENTRANDO COMO USUÁRIO ROOT
+    luciolemos@dev:~$ mysql -u root -p
+#### SAINDO DO MYSQL
+    mysql> exit
 ### 4 - INSTALANDO PHP
     luciolemos@dev:~$ sudo apt install php libapache2-mod-php php-mysql
 #### VERIFICANDO A VERSÃO DO PHP
     luciolemos@dev:~$ php -v
-    PHP 8.1.2-1ubuntu2.14 (cli) (built: Aug 18 2023 11:41:11) (NTS)
-    Copyright (c) The PHP Group
-    Zend Engine v4.1.2, Copyright (c) Zend Technologies
-    with Zend OPcache v8.1.2-1ubuntu2.14, Copyright (c), by Zend Technologies
 #### CRIANDO O HOST `dev` DENTRO DA ESTRUTURA `/var/www`.
     luciolemos@dev:~$ sudo mkdir /var/www/dev
 #### DANNDO PERMISSÃO AO USUÁRIO
     luciolemos@dev:~$ sudo chown -R $USER:$USER /var/www/dev
-
-luciolemos@dev:~$ sudo nano /etc/apache2/sites-available/dev.conf
-
-luciolemos@dev:~$ sudo a2ensite dev
-Enabling site dev.
-To activate the new configuration, you need to run:
-  systemctl reload apache2
-
-luciolemos@dev:~$ sudo a2dissite 000-default
-Site 000-default disabled.
-To activate the new configuration, you need to run:
-  systemctl reload apache2
+####
+    luciolemos@dev:~$ sudo nano /etc/apache2/sites-available/dev.conf
+####
+    luciolemos@dev:~$ sudo a2ensite dev
+    Enabling site dev.
+    To activate the new configuration, you need to run: systemctl reload apache2
+####
+    luciolemos@dev:~$ sudo a2dissite 000-default
+    Site 000-default disabled.
+    To activate the new configuration, you need to run:
+    systemctl reload apache2
 #### VERIFICANDO A SINTAXE
     luciolemos@dev:~$ sudo apache2ctl configtest
-    Syntax OK
 #### RELOAD DO APACHE
     luciolemos@dev:~$ sudo systemctl reload apache2
 #### CRIA DENTRO DE `dev` O ARQUIVO `index.html`
     luciolemos@dev:~$ nano /var/www/dev/index.html
 #### CRIA DENTRO DE `dev` o ARQUIVO `info.php`
     luciolemos@dev:~$ nano /var/www/dev/info.php
+####
+    luciolemos@dev:~$ mysql -u root -p
+#### CRIANDO A BASE DE DADOS
+    mysql> CREATE DATABASE teste;
+#### CRIANDO O USUÁRIO `teste_user` COM SENHA `teste_pw`
+    mysql> CREATE USER 'teste_user'@'%' IDENTIFIED BY 'teste_pw';
+#### ATRIBUIMDO AO USUÁRIO 
+    mysql> GRANT ALL ON teste.* TO 'teste_user'@'%';
+#### LOGANDO COMO `teste_user`.
+    luciolemos@dev:~$ mysql -u teste_user -p
+#### EXIBINDO AS BASES DE DADOS
+    mysql> show databases;
+    +--------------------+
+    | Database           |
+    +--------------------+
+    | information_schema |
+    | performance_schema |
+    | teste              |
+    +--------------------+
+    3 rows in set (0.00 sec)
 
-luciolemos@dev:~$ mysql -u root -p
-Enter password:
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 15
-Server version: 8.0.34-0ubuntu0.22.04.1 (Ubuntu)
-
-Copyright (c) 2000, 2023, Oracle and/or its affiliates.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-mysql> CREATE DATABASE teste;
-Query OK, 1 row affected (0.01 sec)
-
-mysql> CREATE USER 'teste_user'@'%' IDENTIFIED BY 'teste_pw';
-Query OK, 0 rows affected (0.03 sec)
-
-mysql> GRANT ALL ON teste.* TO 'teste_user'@'%';
-Query OK, 0 rows affected (0.01 sec)
-
-mysql> exit
-Bye
-
-luciolemos@dev:~$ mysql -u teste_user -p
-Enter password:
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 16
-Server version: 8.0.34-0ubuntu0.22.04.1 (Ubuntu)
-
-Copyright (c) 2000, 2023, Oracle and/or its affiliates.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-mysql> show databases;
-+--------------------+
-| Database           |
-+--------------------+
-| information_schema |
-| performance_schema |
-| teste              |
-+--------------------+
-3 rows in set (0.00 sec)
-
-mysql> CREATE DATABASE e_comerce;
-ERROR 1044 (42000): Access denied for user 'teste_user'@'%' to database 'e_comerce'
-mysql> show databases;
-+--------------------+
-| Database           |
-+--------------------+
-| information_schema |
-| performance_schema |
-| teste              |
-+--------------------+
-3 rows in set (0.01 sec)
-
-
-luciolemos@dev:~$ mysql -u root -p
-Enter password:
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 17
-Server version: 8.0.34-0ubuntu0.22.04.1 (Ubuntu)
-
-Copyright (c) 2000, 2023, Oracle and/or its affiliates.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-mysql> GRANT ALL ON e_comerce.* TO 'teste_user'@'%';
-Query OK, 0 rows affected (0.01 sec)
-
-mysql> exit
-Bye
-luciolemos@dev:~$ mysql -u teste_user -p
-Enter password:
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 18
-Server version: 8.0.34-0ubuntu0.22.04.1 (Ubuntu)
-
-Copyright (c) 2000, 2023, Oracle and/or its affiliates.
-
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+#### LOGANDO COMO USER
+    luciolemos@dev:~$ mysql -u root -p
+#### ATRIBUINDO PERMISSÕES  
+    mysql> GRANT ALL ON e_comerce.* TO 'teste_user'@'%';
+#### SAINDO DO MYSQL
+    mysql> exit
+#### LOGANDO COMO USUÁRIO `teste_user`.
+    luciolemos@dev:~$ mysql -u teste_user -p
+#### EXIBINDO AS BASES DE DADOS DO USUÁRIO `teste_user`.
 
 mysql> show databases;
 +--------------------+
